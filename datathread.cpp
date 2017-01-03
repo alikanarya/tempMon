@@ -55,8 +55,14 @@ void dataThread::prepareFiles(){
                     zones[i] << fileHeaders[i].toUtf8().constData() << endl;
                     //timeString(); zoneAll << line << "-, -, -, -, -, -, -, -, -" << endl;
                 }
-            } else
+            } else {
+
                 zones[i].open( zoneNames[i].toUtf8().constData(), ios::out | ios::app );
+
+                if (zones[i].is_open()){
+                    zones[i] << fileSeperators[i].toUtf8().constData() << endl;
+                }
+            }
         }
     }
 }
@@ -67,10 +73,37 @@ void dataThread::connectToDB(){
     db.setDatabaseName("homeAutoDB");
     db.setUserName("root");
     db.setPassword("reyhan");
+
     if (!db.open()) {
+
         qDebug() <<  db.lastError().text();
+
     } else {
+
         qDebug() <<  "db connection established";
+
+        QSqlQuery qry;
+        QString cmd;
+
+        cmd = QString( "INSERT INTO %1 (date, time, oto, sln, blk, mut, eyo, cyo, yod) VALUES ('*', '*', '*', '*', '*', '*', '*', '*', '*')").arg(tableNames[0]);
+
+        qry.prepare( cmd );
+
+        if( !qry.exec() )
+          qDebug() << qry.lastError();
+
+
+        for (int i = 0; i < gpioX->dInpNum; i++) {
+
+            cmd = QString( "INSERT INTO %1 (date, time, state) VALUES ('*', '*', '*')" ).arg(tableNames[i+1]);
+
+            qry.prepare( cmd );
+
+            if( !qry.exec() )
+              qDebug() << qry.lastError();
+
+        }
+
     }
 }
 

@@ -9,6 +9,7 @@
 using namespace std;
 
 extern Client *clientx;
+extern bool firstRun;
 
 gpioThread::gpioThread(){
 
@@ -183,9 +184,10 @@ void gpioThread::gpioOps(){
     if (clientx->clientSocket.state() == QAbstractSocket::ConnectedState)
         clientx->startTransfer();
 
-    if ( checkDInputChange() )
+    if ( checkDInputChange() || firstRun)
         emit gpioOpsFinished();
 
+    firstRun = false;
 
 }
 

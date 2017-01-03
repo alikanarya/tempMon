@@ -42,6 +42,7 @@ public:
     ofstream zones[8];
     QString zoneNames[8] = {"./data/zones.csv", "./data/z1_oto.csv", "./data/z2_sln.csv", "./data/z3_blk.csv", "./data/z4_mut.csv", "./data/z5_eyo.csv", "./data/z6_cyo.csv", "./data/z7_yod.csv"};
     QString fileHeaders[8] = {"Date, Time, OtO, SLN, BLK, MUT, EYO, CYO, YOD, T1, T2", "Date, Time, OtO", "Date, Time, SLN", "Date, Time, BLK", "Date, Time, MUT",  "Date, Time, EYO", "Date, Time, CYO", "Date, Time, YOD" };
+    QString fileSeperators[8] = {"*, *, *, *, *, *, *, *, *, *, *", "*, *, *", "*, *, *", "*, *, *", "*, *, *",  "*, *, *", "*, *, *", "*, *, *" };
 
     bool dbRecordEnable = false;
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
