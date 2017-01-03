@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 
     } else {
         label:
-        printf("Usage: %s mode\n",argv[0]);
+        printf("Usage: %s recordModes\n",argv[0]);
         printf("mode: 'fs' (file save) AND / OR 'db' (database record) \n");
 
         if (argc == 2) cout << "p1: " << argv[1] << endl;
