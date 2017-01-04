@@ -19,6 +19,9 @@ bool readSettings(){
 
         clientAddress = settings->value("clientAddress", _CLIENT_ADR).toString();
         clientPort = settings->value("clientPort", _CLIENT_PORT).toInt();
+        dbName = settings->value("dbName", _DB_NAME).toString();
+        dbUser = settings->value("dbUser", _DB_USER).toString();
+        dbPass = settings->value("dbPass", _DB_PASS).toString();
 
         //cout << clientAddress.toUtf8().constData() << endl;
         return true;

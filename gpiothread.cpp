@@ -187,7 +187,7 @@ void gpioThread::gpioOps(){
     if ( checkDInputChange() || firstRun)
         emit gpioOpsFinished();
 
-    firstRun = false;
+    //firstRun = false;
 
 }
 

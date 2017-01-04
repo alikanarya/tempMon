@@ -11,6 +11,10 @@
 #define MAX 64
 
 extern gpioThread *gpioX;
+extern QString dbName;
+extern QString dbUser;
+extern QString dbPass;
+extern bool firstRun;
 
 time_t firstTime, prevTime, currentTime;
 struct tm *prevTimeInfo, *currentTimeInfo = new tm();
@@ -35,6 +39,7 @@ dataThread::dataThread(){
     time (&currentTime);
     currentTimeInfo = localtime (&currentTime);
     firstTime = prevTime = currentTime;
+    timeString();
 
 }
 
@@ -70,9 +75,9 @@ void dataThread::prepareFiles(){
 void dataThread::connectToDB(){
 
     db.setHostName("localhost");
-    db.setDatabaseName("homeAutoDB");
-    db.setUserName("root");
-    db.setPassword("reyhan");
+    db.setDatabaseName(dbName);
+    db.setUserName(dbUser);
+    db.setPassword(dbPass);
 
     if (!db.open()) {
 
@@ -85,7 +90,7 @@ void dataThread::connectToDB(){
         QSqlQuery qry;
         QString cmd;
 
-        cmd = QString( "INSERT INTO %1 (date, time, oto, sln, blk, mut, eyo, cyo, yod) VALUES ('*', '*', '*', '*', '*', '*', '*', '*', '*')").arg(tableNames[0]);
+        cmd = QString( "INSERT INTO %1 (date, time, oto, sln, blk, mut, eyo, cyo, yod) VALUES ('%2', '%3', '*', '*', '*', '*', '*', '*', '*')").arg(tableNames[0]).arg(dateInfo).arg(timeInfo);
 
         qry.prepare( cmd );
 
@@ -95,7 +100,7 @@ void dataThread::connectToDB(){
 
         for (int i = 0; i < gpioX->dInpNum; i++) {
 
-            cmd = QString( "INSERT INTO %1 (date, time, state) VALUES ('*', '*', '*')" ).arg(tableNames[i+1]);
+            cmd = QString( "INSERT INTO %1 (date, time, state) VALUES ('%2', '%3', '*')" ).arg(tableNames[i+1]).arg(dateInfo).arg(timeInfo);
 
             qry.prepare( cmd );
 
@@ -179,7 +184,7 @@ void dataThread::recordData(){
 
         for (int i = 0; i < gpioX->dInpNum; i++) {
 
-            if ( gpioX->dInpArr[i] != gpioX->dInpArrPrev[i] ) {
+            if ( (gpioX->dInpArr[i] != gpioX->dInpArrPrev[i]) || firstRun ) {
 
                 cmd = QString( "INSERT INTO %1 (date, time, state) VALUES ('%2', '%3', %4)").arg(tableNames[i+1]).arg(dateInfo).arg(timeInfo).arg(gpioX->dInpArr[i]);
                 //qDebug() << cmd.toUtf8().constData();
@@ -191,5 +196,7 @@ void dataThread::recordData(){
             }
         }
     }
+
+    firstRun = false;
 
 }
