@@ -6,10 +6,29 @@
 
 using namespace std;
 
+QSettings *settings;                // settings: to read/write ini file
+
 Server *serverx;
 Client *clientx;
 gpioThread *gpioX;
 dataThread *dataX;
+
+bool readSettings(){
+
+    if (QFile::exists(INIFILENAME)){
+
+        clientAddress = settings->value("clientAddress", _CLIENT_ADR).toString();
+        clientPort = settings->value("clientPort", _CLIENT_PORT).toInt();
+
+        //cout << clientAddress.toUtf8().constData() << endl;
+        return true;
+
+    } else {
+        cout << "ini file not found" << endl;
+        return false;
+
+    }
+}
 
 int main(int argc, char *argv[]){
 
@@ -19,6 +38,10 @@ int main(int argc, char *argv[]){
     clientx = new Client();
     gpioX = new gpioThread();
     dataX = new dataThread();
+
+    settings = new QSettings(INIFILENAME, QSettings::IniFormat);
+    readSettings();
+    clientx->setHost(clientAddress, clientPort);
 
     if (argc == 1){
 

@@ -9,13 +9,20 @@ extern QString MSG_CLIENT_CONN;
 
 Client::Client(QObject* parent): QObject(parent){
 
-    host.setAddress(clientAddress);
     connect(&clientSocket, SIGNAL(connected()), this, SLOT(connectionEstablished()));
 }
 
 Client::~Client(){
 
     clientSocket.close();
+}
+
+void Client::setHost(QString hostAddress, quint16 hostPort){
+
+    clientAddress = hostAddress;
+    clientPort = hostPort;
+    host.setAddress(clientAddress);
+
 }
 
 void Client::start(){
