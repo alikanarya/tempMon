@@ -5,8 +5,6 @@ QT += sql
 
 CONFIG += c++11
 
-
-
 TARGET = homeAuto
 target.files = homeAuto
 target.path=/root
@@ -21,13 +19,17 @@ SOURCES += main.cpp \
     client.cpp \
     server.cpp \
     gpiothread.cpp \
-    datathread.cpp
+    datathread.cpp \
+    startthr.cpp \
+    checkclient.cpp
 
 HEADERS += \
     client.h \
     server.h \
     globals.h \
     gpiothread.h \
-    datathread.h
+    datathread.h \
+    startthr.h \
+    checkclient.h
 
 DISTFILES +=

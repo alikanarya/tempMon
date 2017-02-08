@@ -48,6 +48,10 @@ public:
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString tableNames[8] = {"zones", "oto", "sln", "blk", "mut", "eyo", "cyo", "yod"};
 
+    bool cmdRecordData = false;
+
+
+
 public slots:
 
     void recordData();

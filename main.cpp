@@ -1,8 +1,11 @@
 #include <QCoreApplication>
+#include <QObject>
 #include <QtNetwork>
 #include <iostream>
 
 #include "globals.h"
+#include "startthr.h"
+#include "checkclient.h"
 
 using namespace std;
 
@@ -10,8 +13,10 @@ QSettings *settings;                // settings: to read/write ini file
 
 Server *serverx;
 Client *clientx;
+checkClient *checkClientX;
 gpioThread *gpioX;
 dataThread *dataX;
+
 
 bool readSettings(){
 
@@ -39,8 +44,10 @@ int main(int argc, char *argv[]){
 
     serverx = new Server();
     clientx = new Client();
+    checkClientX = new checkClient();
     gpioX = new gpioThread();
     dataX = new dataThread();
+    startThr startX;
 
     settings = new QSettings(INIFILENAME, QSettings::IniFormat);
     readSettings();
@@ -88,15 +95,19 @@ int main(int argc, char *argv[]){
     cout << endl;
 
 
+    // check client timer
+    QTimer *timerCClient = new QTimer();
+    QObject::connect(timerCClient, SIGNAL(timeout()), checkClientX, SLOT(connect()));
+    timerCClient->start(1000);
+
     QObject::connect(serverx, SIGNAL(readFinished()), gpioX, SLOT(enableWrite()));
-    QObject::connect(gpioX, SIGNAL(gpioOpsFinished()), dataX, SLOT(recordData()));
+    QObject::connect(gpioX, SIGNAL(gpioOpsFinished()), &startX, SLOT(runRecordData()));
+    QObject::connect(gpioX, SIGNAL(gpioOpsOK()), checkClientX, SLOT(transferToTCPServer()));
 
     // 1sec timer
     QTimer *timerSec = new QTimer();
-    QObject::connect(timerSec, SIGNAL(timeout()), gpioX, SLOT(gpioOps()));
+    QObject::connect(timerSec, SIGNAL(timeout()), &startX, SLOT(runGPIOops()));
     timerSec->start(1000);
-
-
 
     return app.exec();
 }

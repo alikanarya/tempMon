@@ -110,12 +110,9 @@ gpioThread::~gpioThread(){
 
 void gpioThread::run(){
 
-    if (!stopped){
-//        delete[] w->videoList;
-//        emit this->saveFinished();
-    }
-
-    stopped = false;
+    //if (!stopped){    }
+    //stopped = false;
+    gpioOps();
 }
 
 
@@ -142,11 +139,11 @@ void gpioThread::gpioOps(){
         writeEnable = false;
         //cout << "write to BBB" << endl;   //DBG
     }
-
+/* ***
     if (clientx->clientSocket.state() != QAbstractSocket::ConnectingState &&
         clientx->clientSocket.state() != QAbstractSocket::ConnectedState )
             clientx->start();
-
+*/
     clientx->datagram.clear();
 
     for (int i = 0; i < dInpNum; i++) {
@@ -181,11 +178,12 @@ void gpioThread::gpioOps(){
 
     //cout << clientx->datagram.data() << endl;     //DBG
 
-    if (clientx->clientSocket.state() == QAbstractSocket::ConnectedState)
-        clientx->startTransfer();
+    //if (clientx->clientSocket.state() == QAbstractSocket::ConnectedState) clientx->startTransfer();
 
     if ( checkDInputChange() || firstRun)
         emit gpioOpsFinished();
+
+    emit gpioOpsOK();
 
     //firstRun = false;
 

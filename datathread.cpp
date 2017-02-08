@@ -114,10 +114,13 @@ void dataThread::connectToDB(){
 
 void dataThread::run(){
 
-    if (!stopped){
-    }
+    //if (!stopped){    }
+    //stopped = false;
 
-    stopped = false;
+    if (cmdRecordData) {
+        recordData();
+        cmdRecordData = false;
+    }
 }
 
 void dataThread::stop(){

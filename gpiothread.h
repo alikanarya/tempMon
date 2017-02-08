@@ -79,6 +79,8 @@ public:
     int defaultPeriod = 1000000;
     int defaultDutyCycle = 0;
 
+    bool stopLoop = false;
+
 public slots:
 
     void gpioOps();
@@ -95,6 +97,7 @@ private:
 signals:
 
     void gpioOpsFinished();
+    void gpioOpsOK();
 };
 
 #endif // GPIOTHREAD_H
