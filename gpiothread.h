@@ -5,6 +5,8 @@
 #define LDR_PATH "/sys/bus/iio/devices/iio:device0/in_voltage"
 #define PWM48302200 "ls /sys/devices/platform/ocp/48302000.epwmss/48302200.pwm/pwm"
 #define PWM48304200 "ls /sys/devices/platform/ocp/48304000.epwmss/48304200.pwm/pwm"
+//#define DS18B20_PATH "/sys/devices/w1_bus_master1/28-80000026a828"
+//#define DS18B20_READ "/w1_slave"
 
 #include <QThread>
 
@@ -25,6 +27,7 @@ public:
     int pwmPeriod(int chip, int pinNo, int value);
     int pwmDutyCycle(int chip, int pinNo, int value);
     int readAnalog(int adcPin);
+    //float readDS18B20(int sensor);
     QString consoleCMD(QString cmd);
     bool checkDInputChange();
 

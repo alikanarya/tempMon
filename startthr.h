@@ -4,9 +4,11 @@
 #include <QObject>
 #include "gpiothread.h"
 #include "datathread.h"
+#include "gpiods18b20.h"
 
 extern gpioThread *gpioX;
 extern dataThread *dataX;
+extern gpioDS18B20 *gpioDS18B20X;
 
 class startThr : public QObject {
 
@@ -27,6 +29,10 @@ public slots:
 
     void runGPIOops(){
         gpioX->start();
+    }
+
+    void rungpioDS18B20(){
+        gpioDS18B20X->start();
     }
 
 };

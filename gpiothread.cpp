@@ -180,6 +180,8 @@ void gpioThread::gpioOps(){
 
     //if (clientx->clientSocket.state() == QAbstractSocket::ConnectedState) clientx->startTransfer();
 
+    //readDS18B20(0);
+
     if ( checkDInputChange() || firstRun)
         emit gpioOpsFinished();
 
@@ -320,7 +322,35 @@ int gpioThread::readAnalog(int adcPin){
     fs.close();
     return adcPin;
 }
+/*
+float gpioThread::readDS18B20(int sensor){
 
+    stringstream ss;
+    ss << DS18B20_PATH << DS18B20_READ;
+    fstream fs;
+    fs.open(ss.str().c_str(), fstream::in);
+    //streambuf output;
+    char * buffer = new char [100];
+    fs.read(buffer, 100);
+    QString str(buffer);
+
+    qDebug() << buffer;
+    fs.close();
+
+    QRegExp rx("(\\d+)");
+    QStringList list;
+    int pos = 0;
+
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+        list << rx.cap(1);
+        pos += rx.matchedLength();
+    }
+
+    qDebug() << list.last();
+
+    return 0;
+}
+*/
 QString gpioThread::consoleCMD(QString cmd){
 
     char buf[9];

@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     gpiothread.cpp \
     datathread.cpp \
     startthr.cpp \
-    checkclient.cpp
+    checkclient.cpp \
+    gpiods18b20.cpp
 
 HEADERS += \
     client.h \
@@ -30,6 +31,7 @@ HEADERS += \
     gpiothread.h \
     datathread.h \
     startthr.h \
-    checkclient.h
+    checkclient.h \
+    gpiods18b20.h
 
 DISTFILES +=

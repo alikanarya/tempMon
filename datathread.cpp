@@ -1,5 +1,6 @@
 #include "datathread.h"
 #include "gpiothread.h"
+#include "gpiods18b20.h"
 
 
 #include <string.h>
@@ -15,6 +16,7 @@ extern QString dbName;
 extern QString dbUser;
 extern QString dbPass;
 extern bool firstRun;
+extern gpioDS18B20 *gpioDS18B20X;
 
 time_t firstTime, prevTime, currentTime;
 struct tm *prevTimeInfo, *currentTimeInfo = new tm();
@@ -141,11 +143,13 @@ void dataThread::recordData(){
     cout << dateInfo << " " << timeInfo << "  ";
     for (int i = 0; i < gpioX->dInpNum; i++)
           cout << gpioX->dInpArr[i] << "   ";
-    cout << gpioX->aInpArr[0] << " " << gpioX->aInpArr[1];
 
+    //cout << gpioX->aInpArr[0] << " " << gpioX->aInpArr[1] << " " << gpioDS18B20X->sensor1val;
+    cout << QString::number(gpioX->aInpArr[0]/22.755555,'f',1).toUtf8().constData() << " "
+         << QString::number(gpioX->aInpArr[1]/22.755555,'f',1).toUtf8().constData() << " "
+         << QString::number(gpioDS18B20X->sensor1val,'f',1).toUtf8().constData();
 
     cout << endl;
-
 
     if (fileRecordEnable) {
 

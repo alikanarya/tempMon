@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "startthr.h"
 #include "checkclient.h"
+#include "gpiods18b20.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ Server *serverx;
 Client *clientx;
 checkClient *checkClientX;
 gpioThread *gpioX;
+gpioDS18B20 *gpioDS18B20X;
 dataThread *dataX;
 
 
@@ -27,6 +29,7 @@ bool readSettings(){
         dbName = settings->value("dbName", _DB_NAME).toString();
         dbUser = settings->value("dbUser", _DB_USER).toString();
         dbPass = settings->value("dbPass", _DB_PASS).toString();
+        ds18b20_SN1 = settings->value("ds18b20_SN1", _DS18B20_SN1).toString();
 
         //cout << clientAddress.toUtf8().constData() << endl;
         return true;
@@ -46,6 +49,7 @@ int main(int argc, char *argv[]){
     clientx = new Client();
     checkClientX = new checkClient();
     gpioX = new gpioThread();
+    gpioDS18B20X = new gpioDS18B20();
     dataX = new dataThread();
     startThr startX;
 
@@ -88,10 +92,12 @@ int main(int argc, char *argv[]){
     //cout << gpioX->PWMCHIP0_PATH.toUtf8().constData() << endl;
     //cout << gpioX->PWMCHIP1_PATH.toUtf8().constData() << endl;
 
+    gpioDS18B20X->ds18b20_SN1 = ds18b20_SN1;
+
     if (dataX->fileRecordEnable) dataX->prepareFiles();
     if (dataX->dbRecordEnable) dataX->connectToDB();
 
-    printf("__Date_____Time___OtO_SLN_BLK_MUT_EYO_CYO_YOD__T1___T2");
+    printf("__Date_____Time___OtO_SLN_BLK_MUT_EYO_CYO_YOD__T1___T2___Tout");
     cout << endl;
 
 
@@ -108,6 +114,10 @@ int main(int argc, char *argv[]){
     QTimer *timerSec = new QTimer();
     QObject::connect(timerSec, SIGNAL(timeout()), &startX, SLOT(runGPIOops()));
     timerSec->start(1000);
+
+    QTimer *timerTemperature = new QTimer();
+    QObject::connect(timerTemperature, SIGNAL(timeout()), &startX, SLOT(rungpioDS18B20()));
+    timerTemperature->start(3000);
 
     return app.exec();
 }

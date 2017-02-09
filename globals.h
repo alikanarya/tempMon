@@ -12,6 +12,7 @@
 #define _DB_NAME            "homeAutoDB"
 #define _DB_USER            "root"
 #define _DB_PASS            "reyhan"
+#define _DS18B20_SN1        "28-800000xxxxxx"
 
 QString MSG_SERVER_INIT = "Server is listening...";
 QString MSG_CLIENT_CONN = "Client connected";
@@ -22,6 +23,7 @@ quint16 clientPort = 0;
 QString dbName;
 QString dbUser;
 QString dbPass;
+QString ds18b20_SN1;
 
 bool firstRun = true;
 
