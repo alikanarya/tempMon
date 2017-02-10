@@ -27,6 +27,11 @@ public slots:
         dataX->start();
     }
 
+    void recordTemperature(){
+        dataX->cmdRecordTemperature = true;
+        dataX->start();
+    }
+
     void runGPIOops(){
         gpioX->start();
     }

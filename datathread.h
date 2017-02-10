@@ -46,15 +46,17 @@ public:
 
     bool dbRecordEnable = false;
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    QString tableNames[8] = {"zones", "oto", "sln", "blk", "mut", "eyo", "cyo", "yod"};
+    QString tableNames[9] = {"zones", "oto", "sln", "blk", "mut", "eyo", "cyo", "yod", "tempout"};
 
     bool cmdRecordData = false;
+    bool cmdRecordTemperature = false;
 
 
 
 public slots:
 
     void recordData();
+    void recordTemperature();
 
 
 protected:

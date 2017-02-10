@@ -110,14 +110,19 @@ int main(int argc, char *argv[]){
     QObject::connect(gpioX, SIGNAL(gpioOpsFinished()), &startX, SLOT(runRecordData()));
     QObject::connect(gpioX, SIGNAL(gpioOpsOK()), checkClientX, SLOT(transferToTCPServer()));
 
-    // 1sec timer
+
+    // temperature reading
+    QObject::connect(gpioDS18B20X, SIGNAL(readOK()), &startX, SLOT(recordTemperature()));
+    startX.rungpioDS18B20();
+
+    // gpio timer
     QTimer *timerSec = new QTimer();
     QObject::connect(timerSec, SIGNAL(timeout()), &startX, SLOT(runGPIOops()));
     timerSec->start(1000);
 
     QTimer *timerTemperature = new QTimer();
     QObject::connect(timerTemperature, SIGNAL(timeout()), &startX, SLOT(rungpioDS18B20()));
-    timerTemperature->start(3000);
+    timerTemperature->start(6000);
 
     return app.exec();
 }

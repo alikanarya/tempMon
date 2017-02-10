@@ -67,7 +67,7 @@ float gpioDS18B20::readDS18B20(int sensor){
         val = valstr.toInt() / 1000.0;
     }
 
-    qDebug() << val;
+    //qDebug() << val;
 
     return val;
 }

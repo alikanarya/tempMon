@@ -111,6 +111,15 @@ void dataThread::connectToDB(){
 
         }
 
+        cmd = QString( "INSERT INTO %1 (date, time, temp) VALUES ('%2', '%3', -1)" ).arg(tableNames[8]).arg(dateInfo).arg(timeInfo);
+        //qDebug() << cmd.toUtf8().constData();
+
+        qry.prepare( cmd );
+
+        if( !qry.exec() )
+          qDebug() << qry.lastError();
+
+
     }
 }
 
@@ -122,6 +131,11 @@ void dataThread::run(){
     if (cmdRecordData) {
         recordData();
         cmdRecordData = false;
+    }
+
+    if (cmdRecordTemperature) {
+        recordTemperature();
+        cmdRecordTemperature = false;
     }
 }
 
@@ -202,8 +216,33 @@ void dataThread::recordData(){
                   qDebug() << qry.lastError();
             }
         }
+
     }
 
     firstRun = false;
+
+}
+
+void dataThread::recordTemperature(){
+
+    time (&currentTime);
+    currentTimeInfo = localtime (&currentTime);
+    timeString();
+
+    if (dbRecordEnable && db.open()) {
+
+        QSqlQuery qry;
+        QString cmd;
+
+
+        cmd = QString( "INSERT INTO %1 (date, time, temp) VALUES ('%2', '%3', %4)").arg(tableNames[8]).arg(dateInfo).arg(timeInfo).arg(gpioDS18B20X->sensor1val);
+        //qDebug() << cmd.toUtf8().constData();
+
+        qry.prepare( cmd );
+
+        if( !qry.exec() )
+          qDebug() << qry.lastError();
+
+    }
 
 }
