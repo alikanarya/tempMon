@@ -94,13 +94,13 @@ int main(int argc, char *argv[]){
 
     gpioDS18B20X->ds18b20_SN1 = ds18b20_SN1;
 
-    if (dataX->fileRecordEnable) dataX->prepareFiles();
-    if (dataX->dbRecordEnable) dataX->connectToDB();
+    //if (dataX->fileRecordEnable) dataX->prepareFiles();
+    //if (dataX->dbRecordEnable) dataX->connectToDB();
 
-    printf("__Date_____Time___OtO_SLN_BLK_MUT_EYO_CYO_YOD__T1___T2___Tout");
-    cout << endl;
+    //printf("__Date_____Time___OtO_SLN_BLK_MUT_EYO_CYO_YOD__T1___T2___Tout");
+    //cout << endl;
 
-
+    /*
     // check client timer
     QTimer *timerCClient = new QTimer();
     QObject::connect(timerCClient, SIGNAL(timeout()), checkClientX, SLOT(connect()));
@@ -109,20 +109,22 @@ int main(int argc, char *argv[]){
     QObject::connect(serverx, SIGNAL(readFinished()), gpioX, SLOT(enableWrite()));
     QObject::connect(gpioX, SIGNAL(gpioOpsFinished()), &startX, SLOT(runRecordData()));
     QObject::connect(gpioX, SIGNAL(gpioOpsOK()), checkClientX, SLOT(transferToTCPServer()));
-
+    */
 
     // temperature reading
     QObject::connect(gpioDS18B20X, SIGNAL(readOK()), &startX, SLOT(recordTemperature()));
     startX.rungpioDS18B20();
 
+    /*
     // gpio timer
     QTimer *timerSec = new QTimer();
     QObject::connect(timerSec, SIGNAL(timeout()), &startX, SLOT(runGPIOops()));
     timerSec->start(1000);
+    */
 
     QTimer *timerTemperature = new QTimer();
     QObject::connect(timerTemperature, SIGNAL(timeout()), &startX, SLOT(rungpioDS18B20()));
-    timerTemperature->start(6000);
+    timerTemperature->start(1000);
 
     return app.exec();
 }

@@ -5,8 +5,8 @@ QT += sql
 
 CONFIG += c++11
 
-TARGET = homeAuto
-target.files = homeAuto
+TARGET = tempMon
+target.files = tempMon
 target.path=/root
 
 INSTALLS += target
