@@ -50,13 +50,25 @@ float gpioDS18B20::readDS18B20(int sensor){
     //qDebug() << buffer;
     fs.close();
 
-    QRegExp rx("(\\d{5})");
+    QRegExp rxd("\\b(t)\\b");
+    int posd = rxd.indexIn(str);
+
+    //qDebug() << "t= " << posd;
+
+//    QRegExp rx("(\\d{5})");
+//    QRegExp rx("(\\d+)");
+    QRegExp rx("(\\-?\\d+)");
+    //QRegExp rx("^\\-?[1-9]\\d+$");
     QStringList list;
     int pos = 0;
     while ((pos = rx.indexIn(str, pos)) != -1) {
         list << rx.cap(1);
         pos += rx.matchedLength();
+        if (pos > posd)
+            break;
+        //qDebug() << "pos; " << pos;
     }
+
 
     QString valstr = "";
     float val = -1;
